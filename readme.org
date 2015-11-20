@@ -8,9 +8,11 @@ We tried to follow modular approach and straightforward logic, i.e. combination 
 * Prerequisites and Installation
 Currently works on Linux only.
 Install hmmer3 with easel-miniapps; blast2; biopython; reportlab; ncoils.
+You should manually change the path to data files (Prosite or Pfam) in the scripts.
+The default is data/Pfam28.0/Pfam-A.hmm* for Pfam hmms and data/custom.dat for Prosite matrices.
+The default directory where proteomes are searched is ../proteomes/all/.
 Download and unpack Pfam-A database; pfam_scan; ps_scan; smart_batch.
-All installation procedures are listed in install.sh. Depending on your system they may vary.
-Install.sh was checked on Ubuntu 14.04 x64.
+
 
 * Tasks [18/23]
   - [X] Strip \n from fasta files ( stripn.py )
@@ -88,23 +90,3 @@ Install.sh was checked on Ubuntu 14.04 x64.
     -> May be use jackhmmer? Human protein could be not the first.
   - [ ] conv.py should add date when converting fasta > genbank  
   - [ ] How this suite could be extended?
-
-
-* Diary
-  - Ciona has full M-starting intersectin [[http://www.ncbi.nlm.nih.gov/protein/699248758?report=fasta]] instead of H2XVQ2
-  - reciprocal hmmer search [7/7]
-    - [X] predict pfam
-    - [X] predict prosite
-    - [X] predict ncoils
-      -> ncoils prediction does not match SMART
-    - [X] predict regex
-    - [X] parse coordinate files with one procedure
-    - [X] domain match
-    - [X] reciprocal search
-  - [X] count motives for CLASPs
-  - [X] predict clathrin heavy and light chains
-    -> It seems that reciprocal search filter should be disabled
-  - [X] predict auxilin/GAK
-  - [X] make the table with predecessors
-
-
