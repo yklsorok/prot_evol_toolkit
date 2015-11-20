@@ -1,0 +1,110 @@
+* Name
+Protein evolution toolkit
+
+* About
+This project aims to make a bit easier the exploratory analysis of the protein evolution.
+We tried to follow modular approach and straightforward logic, i.e. combination of different scripts would lead you to the desired result.
+
+* Prerequisites and Installation
+Currently works on Linux only.
+Install hmmer3 with easel-miniapps; blast2; biopython; reportlab; ncoils.
+Download and unpack Pfam-A database; pfam_scan; ps_scan; smart_batch.
+All installation procedures are listed in install.sh. Depending on your system they may vary.
+Install.sh was checked on Ubuntu 14.04 x64.
+
+* Tasks [18/23]
+  - [X] Strip \n from fasta files ( stripn.py )
+  - [X] Calculate length of sequence/s in file ( len.py )
+  - [X] Convert between different sequence formats ( conv.py )
+  - [X] Add feature/s to the *.gb file ( add_features.py )
+  - [X] Extract protein/s tail/s [1/1] ( tail.py )
+  - [X] Extract protein/s head/s ( head.py )
+  - [X] Extract sequence/s of specified feature/s from annotated *.gb file ( extract_features.py )
+  - [X] Print the information about the organism by its 5-letter mnemonic name ( wtf_is.py )
+  - [X] Calculate differences between two proteins by different protein scales ( analyze_by_protscale.py )
+  - [X] Draw domain structure [2/2] of the protein ( draw_domains.py )
+    - [X] using GenomeDiagram
+    - [X] using PSImage
+  - [X] Predict structural features for fasta file/s [4/4] ( annotate_proteins.py )
+    - [X] Predict coiled coils using ncoils
+    - [X] Predict domains using pfam_scan through Pfam-A models
+    - [X] Predict short motives using regular expressions
+    - [X] Predict domains or motives with prosite matrices
+  - [X] Domain and motive counter for every phylum for genbank file ( count_hits.py )
+  - [X] Reciprocal HMMER search [3/3] of homologous proteins ( reciprocal_hmmer_search.py )
+    - [X] Apply forward search filter
+    - [X] Apply domain match filter
+    - [X] Apply reciprocal search filter
+  - [ ] Draw domain and exon overlay [0/2] ( draw_exons_domains.py )
+    - [ ] using PSImage
+    - [ ] using GenomeDiagram
+  - [X] ORF finder [1/1] ( orf_finder.py ):
+    - Using pfam_scan through Pfam-A :redundant:
+    - Using ps_scan :redundant:
+    - [X] Using SMART API
+  - [ ] Align protein to genomic DNA with proper exon matching ( align_protein2dna.py )
+  - [X] Parse prediction files for easy import to Excel/Libreoffice ( make_csv.py )
+  - [X] Helper script to filter out meaningless short motifs ( filter.py )
+  - [X] Script to extract feature coordinates from gb file ( extract_coords.py )
+  - [ ] Count regex in all sequences of the file ( count_regex.py )
+  - [ ] Code review and module creation ( ProteinEvolution.py )
+  - [ ] Develop installation procedure ( install.sh )
+  - [X] Write README ( readme.org )
+  - [ ] Extensive testing [0/14] [[cmd:/media/big/werk/grive/_tasks/10040_git_for_pbiology/]]
+    - [ ] stripn.py
+    - [ ] len.py
+    - [ ] conv.py
+    - [ ] orf_finder.py
+    - [ ] reciprocal_hmmer_search.py
+    - [ ] count_hits.py
+    - [ ] analyze_by_protscale.py
+    - [ ] draw_domains.py
+    - [ ] draw_exons_domains.py
+    - [ ] annotate_proteins.py
+    - [ ] extract_features.py
+    - [ ] add_features.py
+    - [ ] tail.py
+    - [ ] head.py
+
+
+* Fixes [11/18]
+  - [X] Make conv.py correctly extract organism from fasta
+  - [X] Format hit counter output
+  - [X] Filter out UIM, UBA and other short motives from protein tails
+  - [X] tail.py should skip domains less than 25 aminoacids
+  - [X] Apply filters in rhs: forward bitscore, gene name, domain match, reverse bitscore
+  - [X] Fix problems with description match in human proteins during reciprocal search
+  - [X] Fix prosite coordinate parsing
+  - [ ] If Uniprot protein is ugly, complain, and search on Refseq for the same organism
+  - [ ] Guess if the protein is isoform or true another protein
+  - [ ] Remake count_hits to use functions from module
+  - [ ] Remake annotate_proteins to use functions from module
+  - [X] Filter clathrin and AP2-binding motifs to be only in protein tail in count_hits.py
+  - [X] Add tail length to count_hits.py
+  - [ ] Fix make_csv.py to parse correctly last entry
+  - [ ] Fix domain_match routine to discard only numbers in domain names
+  - [X] What to do if domain match is ok but reciprocal search gives no results?
+    -> In some situations, reciprocal search is not useful, the proteins are too distant while PFAM hmm works. Do not perform reciprocal search, just return true always. I.e., apply only domain match filter.
+    -> May be use jackhmmer? Human protein could be not the first.
+  - [ ] conv.py should add date when converting fasta > genbank  
+  - [ ] How this suite could be extended?
+
+
+* Diary
+  - Ciona has full M-starting intersectin [[http://www.ncbi.nlm.nih.gov/protein/699248758?report=fasta]] instead of H2XVQ2
+  - reciprocal hmmer search [7/7]
+    - [X] predict pfam
+    - [X] predict prosite
+    - [X] predict ncoils
+      -> ncoils prediction does not match SMART
+    - [X] predict regex
+    - [X] parse coordinate files with one procedure
+    - [X] domain match
+    - [X] reciprocal search
+  - [X] count motives for CLASPs
+  - [X] predict clathrin heavy and light chains
+    -> It seems that reciprocal search filter should be disabled
+  - [X] predict auxilin/GAK
+  - [X] make the table with predecessors
+
+
