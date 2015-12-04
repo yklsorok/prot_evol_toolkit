@@ -37,11 +37,12 @@ def make_hmm(fastafile, modelname):
 
 
 def hmm_search(modelname, organism, out_filename = None):
-    ''' Takes hmm name and performs search through proteomes. The directory with proteomes is ../proteomes
+    ''' Takes hmm name and performs search through proteomes. The directory with proteomes is proteomes_dir assigned in Configuration section
     '''
     if out_filename == None:
         out_filename = modelname + ".hits"
-    hmm_search_command = "hmmsearch --noali --tblout " + out_filename + " " + modelname + ".hmm ../proteomes/all/" + organism + ".fasta"
+    modelname = "data/" + modelname + ".hmm"
+    hmm_search_command = "hmmsearch --noali --tblout " + out_filename + " " + modelname + " " + proteomes_dir + organism + ".fasta"
     print "Searching in all proteomes with built hmm ..."
     os.system(hmm_search_command)
 
@@ -93,7 +94,7 @@ def seq_fetch(full_seq_name, organism=None):
         # if organism is not set, try to guess from seq name
         organism = full_seq_name.split("|")[2].split("_")[1]
     seq_filename = seq_id + ".fasta"
-    fetch_command = "esl-sfetch ../proteomes/all/" + organism + ".fasta \"" + full_seq_name + "\" > " + seq_filename
+    fetch_command = "esl-sfetch " + proteomes_dir + organism + ".fasta \"" + full_seq_name + "\" > " + seq_filename
     try:
         os.system(fetch_command)
         return seq_filename
@@ -105,7 +106,7 @@ def seq_fetch(full_seq_name, organism=None):
 def make_pfam_prediction(seq_filename, out_filename):
     ''' Runs pfam_scan
     '''
-    pfam_command = "./pfam_scan -fasta " + seq_filename + " -dir data > " + out_filename
+    pfam_command = "pfam_scan.pl -fasta " + seq_filename + " -dir data > " + out_filename
     # print pfam_command
     try:
         os.system(pfam_command)
@@ -117,7 +118,7 @@ def make_pfam_prediction(seq_filename, out_filename):
 def make_prosite_prediction(seq_filename, out_filename):
     ''' Runs prosite prediction with ps_scan
     '''
-    prosite_command = "./ps_scan.pl --pfscan ./pfscan -d data/custom.dat -o pff " + seq_filename + " > " + out_filename
+    prosite_command = "ps_scan.pl -d data/custom.dat -o pff " + seq_filename + " > " + out_filename
     # print prosite_command
     try:
         os.system(prosite_command)
@@ -257,7 +258,7 @@ def reciprocal_hmm_search(modelname, modelname_regex, filename, organism, rev_in
     is_found = False
     if out_filename == None:
         out_filename = modelname + ".rechits_" + organism
-    reciprocal_search_command = "phmmer --noali --tblout " + out_filename + " " + filename + " ../proteomes/all/" + organism + ".fasta > hmmer_res"
+    reciprocal_search_command = "phmmer --noali --tblout " + out_filename + " " + filename + " " + proteomes_dir + organism + ".fasta > hmmer_res"
     os.system(reciprocal_search_command)
     try:
         hits = SearchIO.read(out_filename, "hmmer3-tab")
@@ -281,16 +282,19 @@ def reciprocal_hmm_search(modelname, modelname_regex, filename, organism, rev_in
     return is_found
 
 
+
+# Configuration
+proteomes_dir = "data/proteomes/all/"
 #domains = { "EF-hand": 1, "SH3": 1, }
 manual_mode = False
 # domains = { "PID": 1, "NumbF": 1 }
-domains = { "Adaptin": 1, }
+domains = { "PS51070": 1, "Adaptin": 1, }
 # domains = { "Adap": 1, "PS51070": 1}
-modelname = "AP2A"
+modelname = "STON"
 # modelname_regex = r'EPN|CLINT|Epsin'
 #modelname_regex = r'AGFG'
 # modelname_regex = r'LDLRAP'
-modelname_regex = r'AP2A'
+modelname_regex = r'STON'
 forw_inc_bitscore_percentage = 0.3
 rev_inc_bitscore_percentage = 0.5
 # organisms = [
